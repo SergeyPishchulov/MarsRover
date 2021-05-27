@@ -1,7 +1,4 @@
-import java.lang.reflect.Array;
-import java.util.Dictionary;
-import java.util.HashMap;
-import java.util.PriorityQueue;
+import java.util.*;
 
 
 public class MarsRouteFinder implements RouteFinder {
@@ -22,26 +19,72 @@ public class MarsRouteFinder implements RouteFinder {
         var startAndFin = getStartAndFinish(map);
         var start = startAndFin[0];
         var fin = startAndFin[1];
-        var frontier = new PriorityQueue<Tuple<Point, Integer>>(0, new ShortestComparator());
+        var frontier = new PriorityQueue<Tuple<Point, Integer>>(new ShortestComparator());
         frontier.add(new Tuple<Point, Integer>(start, 0));
-        var camefrom=new HashMap<Point, Point>();
-        var costSoFar=new HashMap<Point, Integer>();
+        var camefrom = new HashMap<Point, Point>();
+        var costSoFar = new HashMap<Point, Integer>();
         camefrom.put(start, null);
         costSoFar.put(start, 0);
-
-        while (!frontier.isEmpty())
-        {
-            var curTuple=frontier.peek();
+        while (!frontier.isEmpty()) {
+            var curTuple = frontier.peek();
             frontier.remove(curTuple);
-            var cur=curTuple.First;
+            var cur = curTuple.First;
 
-            if (cur==fin)
+            if (cur == fin)
                 break;
 
-            for (var next in neighbours)
+            for (var next : getValidNeighbors(cur, map)) {
+                var newCost = costSoFar.get(cur) + 1;
+                if (!costSoFar.containsKey(next) || newCost < costSoFar.get(next)) {
+                    costSoFar.put(next, newCost);
+                    var priority = newCost + manhattenDistance(next, fin);
+                    frontier.add(new Tuple<>(next, priority));
+                    camefrom.put(next, cur);
+                }
+            }
         }
+        if (!costSoFar.containsKey(fin))
+            return null;
+        return RollBackRoute(camefrom, start, fin, map);
+    }
 
+    private char[][] RollBackRoute(HashMap<Point, Point> cameFrom, Point start, Point fin, char[][] map) {
+        var width = map[0].length;
+        var height = map.length;
+        var cur = fin;
+        while (cur != start) {
+            map[cur.X][cur.Y] = '+';
+            cur = cameFrom.get(cur);
+        }
+        map[fin.X][fin.Y] = 'X';
+        return map;
 
-        return new char[0][];
+    }
+
+    private Integer manhattenDistance(Point a, Point b) {
+        return Math.abs(a.X - b.X) + Math.abs(a.Y - b.Y);
+    }
+
+    private ArrayList<Point> getValidNeighbors(Point p, char[][] map) {//TODO recheck //, HashMap<Point, Integer> costSoFar
+        var width = map[0].length;
+        var height = map.length;
+        var neighbors = new ArrayList<Point>();
+
+        var right = new Point(p.X + 1, p.Y);
+        if (right.X < width && map[right.X][right.Y] != '#')
+            neighbors.add(right);
+
+        var left = new Point(p.X - 1, p.Y);
+        if (left.X >= 0 && map[left.X][left.Y] != '#')
+            neighbors.add(left);
+
+        var up = new Point(p.X, p.Y + 1);
+        if (up.Y < height && map[up.X][up.Y] != '#')
+            neighbors.add(up);
+
+        var down = new Point(p.X, p.Y - 1);
+        if (down.Y >= 0 && map[down.X][down.Y] != '#')
+            neighbors.add(down);
+        return neighbors;
     }
 }
