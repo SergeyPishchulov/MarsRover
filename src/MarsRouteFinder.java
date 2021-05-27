@@ -6,9 +6,9 @@ public class MarsRouteFinder implements RouteFinder {
         var res = new Point[2];
         for (var x = 0; x < map[0].length; x++)
             for (var y = 0; y < map.length; y++) {
-                if (map[x][y] == '@')
+                if (map[y][x] == '@')
                     res[0] = new Point(x, y);
-                if (map[x][y] == 'X')
+                if (map[y][x] == 'X')
                     res[1] = new Point(x, y);
             }
         return res;
@@ -53,10 +53,10 @@ public class MarsRouteFinder implements RouteFinder {
         var height = map.length;
         var cur = fin;
         while (cur != start) {
-            map[cur.X][cur.Y] = '+';
+            map[cur.Y][cur.X] = '+';
             cur = cameFrom.get(cur);
         }
-        map[fin.X][fin.Y] = 'X';
+        map[fin.Y][fin.X] = 'X';
         return map;
 
     }
@@ -71,19 +71,20 @@ public class MarsRouteFinder implements RouteFinder {
         var neighbors = new ArrayList<Point>();
 
         var right = new Point(p.X + 1, p.Y);
-        if (right.X < width && map[right.X][right.Y] != '#')
+        if (right.X < width && map[right.Y][right.X] != '#')
             neighbors.add(right);
 
         var left = new Point(p.X - 1, p.Y);
-        if (left.X >= 0 && map[left.X][left.Y] != '#')
+        if (left.X >= 0 && map[left.Y][left.X] != '#')
             neighbors.add(left);
 
         var up = new Point(p.X, p.Y + 1);
-        if (up.Y < height && map[up.X][up.Y] != '#')
+        System.out.println(up);
+        if (up.Y < height && map[up.Y][up.X] != '#')
             neighbors.add(up);
 
         var down = new Point(p.X, p.Y - 1);
-        if (down.Y >= 0 && map[down.X][down.Y] != '#')
+        if (down.Y >= 0 && map[down.Y][down.X] != '#')
             neighbors.add(down);
         return neighbors;
     }

@@ -2,7 +2,7 @@ import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args) {
-        var s = "...@.\n" +
+        var s0 = "...@.\n" +
                 ".####\n" +
                 ".....\n" +
                 "####.\n" +
@@ -13,6 +13,12 @@ public class Main {
                 ".....\n" +
                 ".@...\n" +
                 ".....\n";
+
+        var s = "...@\n" +
+                "#.##\n" +
+                "....\n" +
+                "...X\n" +
+                "....";
         var m = getMap(s);
         var finder = new MarsRouteFinder();
         var route = finder.findRoute(m);
@@ -32,7 +38,7 @@ public class Main {
 
     private static char[][] getMap(String s) {
         var rows = s.split("\n");
-        var map = new char[rows[0].length()][rows.length];
+        var map = new char[rows.length][rows[0].length()];
 
         for (var x = 0; x < rows[0].length(); x++)
             for (var y = 0; y < rows.length; y++) {
