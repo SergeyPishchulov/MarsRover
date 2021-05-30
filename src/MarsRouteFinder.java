@@ -1,6 +1,5 @@
 import java.util.*;
 
-
 public class MarsRouteFinder implements RouteFinder {
     private Point[] getStartAndFinish(char[][] map) {
         var res = new Point[2];
@@ -49,8 +48,6 @@ public class MarsRouteFinder implements RouteFinder {
     }
 
     private char[][] RollBackRoute(HashMap<Point, Point> cameFrom, Point start, Point fin, char[][] map) {
-        var width = map[0].length;
-        var height = map.length;
         var cur = fin;
         while (cur != start) {
             map[cur.Y][cur.X] = '+';
@@ -79,7 +76,6 @@ public class MarsRouteFinder implements RouteFinder {
             neighbors.add(left);
 
         var up = new Point(p.X, p.Y + 1);
-        System.out.println(up);
         if (up.Y < height && map[up.Y][up.X] != '#')
             neighbors.add(up);
 

@@ -2,41 +2,78 @@ import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args) {
-        var s0 = "...@.\n" +
+        var s5 = "...@.\n" +
                 ".####\n" +
                 ".....\n" +
                 "####.\n" +
                 ".X...";
 
-        var s2 = "..X..\n" +
+        var s4 = "..X..\n" +
                 "#####\n" +
                 ".....\n" +
                 ".@...\n" +
                 ".....\n";
 
-        var s = "...@\n" +
+        var s1 = "...@\n" +
                 "#.##\n" +
                 "....\n" +
                 "...X\n" +
                 "....";
-        var m = getMap(s);
+        var s = "................\n" +
+                "................\n" +
+                "................\n" +
+                "................\n" +
+                "................\n" +
+                "................\n" +
+                "................\n" +
+                "................\n" +
+                "................\n" +
+                "................\n" +
+                "................\n" +
+                "................\n" +
+                "................\n" +
+                "................\n" +
+                "................\n" +
+                ".......@........\n" +
+                ".###############\n" +
+                "................\n" +
+                "................\n" +
+                "................\n" +
+                "................\n" +
+                "................\n" +
+                "................\n" +
+                "................\n" +
+                "................\n" +
+                "................\n" +
+                "................\n" +
+                "................\n" +
+                "................\n" +
+                "................\n" +
+                "................\n" +
+                "................\n" +
+                "................\n" +
+                "................\n" +
+                "................\n" +
+                "................\n" +
+                "................\n" +
+                "...............X";
         var finder = new MarsRouteFinder();
-        var route = finder.findRoute(m);
+        var route = finder.findRoute(getMap(s));
+
         if (route == null) {
-            System.out.println("Null. No way.");
-            return;
-        }
-        PrintMatrix(route);
+            System.out.println("A* Null. No way.");
+        } else
+            PrintMatrix(route);
 
     }
 
-    private static void PrintMatrix(char[][] map) {
+    public static void PrintMatrix(char[][] map) {
         for (var row : map) {
             System.out.println(Arrays.toString(row));
         }
     }
 
-    private static char[][] getMap(String s) {
+    public static char[][] getMap(String s) {
         var rows = s.split("\n");
         var map = new char[rows.length][rows[0].length()];
 
