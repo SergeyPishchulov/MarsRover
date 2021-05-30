@@ -1,5 +1,5 @@
 # MarsRover
-Find shortest path in labyrinth with A*
+Поиск кратчайшего пути с помощью алгоритма A*
 
 Расположение - src/MarsRouteFinder.java
 
