@@ -26,6 +26,7 @@ public class MarsRouteFinder implements RouteFinder {
         costSoFar.put(start, 0);
         while (!frontier.isEmpty()) {
             var curTuple = frontier.peek();
+            //Point & Эвристика - оценка расстояния до финиша
             frontier.remove(curTuple);
             var cur = curTuple.First;
 
